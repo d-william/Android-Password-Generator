@@ -1,19 +1,14 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="actionOverflowMenuStyle">@style/AppTheme.ToolBar.Menu.Popup</item>
+
         <item name="snackbarStyle">@style/AppTheme.Snackbar</item>
         <item name="checkboxStyle">@style/AppTheme.Checkbox</item>
-    </style>
-
-    <style name="AppTheme.ToolBar">
-        <item name="titleTextColor">@color/colorClear</item>
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:tint">@null</item>
-        <item name="colorControlNormal">@color/colorClear</item>
-        <item name="actionOverflowMenuStyle">@style/AppTheme.ToolBar.Menu.Popup</item>
     </style>
 
     <style name="AppTheme.Snackbar" parent="Widget.MaterialComponents.Snackbar">

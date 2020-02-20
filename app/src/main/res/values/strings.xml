@@ -18,4 +18,5 @@
     <string name="delete">delete</string>
     <string name="select_all">select all</string>
     <string name="choose_bulk">Choose number</string>
+    <string name="default_length">8</string>
 </resources>
