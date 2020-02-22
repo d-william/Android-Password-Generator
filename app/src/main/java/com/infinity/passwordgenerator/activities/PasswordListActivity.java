@@ -1,5 +1,6 @@
-package com.infinity.passwordgenerator;
+package com.infinity.passwordgenerator.activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipData;
@@ -11,15 +12,15 @@ import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.infinity.passwordgenerator.R;
+import com.infinity.passwordgenerator.adapters.PasswordListAdapter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,10 +30,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-public class HistoryActivity extends AppCompatActivity implements HistoryAdapter.OnCheckedItemLengthChangeListener {
+public class PasswordListActivity extends AppCompatActivity implements PasswordListAdapter.OnCheckedItemLengthChangeListener {
+
+    public static final String ACTION_HISTORY = "android.intent.action.HISTORY";
+    public static final String ACTION_BULK = "android.intent.action.BULK";
+    public static final String ACTION_CLEAR_HISTORY = "android.intent.action.CLEAR_HISTORY";
+    public static final String ACTION_REMOVE_FROM_HISTORY = "android.intent.action.REMOVE_FROM_HISTORY";
 
     private ClipboardManager clipboard;
-    private HistoryAdapter adapter;
+    private PasswordListAdapter adapter;
     private boolean mode;
     private float density;
     private ArrayList<String> toRemove;
@@ -43,14 +49,22 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     private ImageView delete;
     private ImageView check;
     private View tools;
+    private MenuItem clear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_password_list);
 
         Intent intent = getIntent();
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            if (ACTION_BULK.equals(intent.getAction())) actionBar.setTitle(R.string.bulk);
+            else actionBar.setTitle(R.string.hystory);
+        }
+
         String historySerialized = intent.getStringExtra(Intent.EXTRA_TEXT);
 
         setResult(RESULT_CANCELED, new Intent());
@@ -71,7 +85,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         disableButton();
 
         mode = false;
-        adapter = new HistoryAdapter(this, R.layout.history_item, R.layout.history_item_mode , R.id.password, clipboard, findViewById(R.id.activity));
+        adapter = new PasswordListAdapter(this, R.layout.history_item, R.layout.history_item_mode, clipboard, findViewById(R.id.activity));
         adapter.addAll(deserialize(historySerialized));
         adapter.setOnCheckedItemLengthChangeListener(this);
         history = findViewById(R.id.history);
@@ -85,6 +99,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.history_menu, menu);
+        clear = menu.getItem(0);
         return true;
     }
 
@@ -103,7 +118,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
 
     private void clearHistory() {
         Intent data = new Intent();
-        data.setAction(MainActivity.ACTION_CLEAR_HISTORY);
+        data.setAction(ACTION_CLEAR_HISTORY);
         setResult(RESULT_OK, data);
         adapter.clear();
     }
@@ -113,10 +128,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         mode = true;
         vibrate();
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_clear);
+        clear.setVisible(false);
         adapter.setMode(mode);
         adapter.setChecked(position, true);
         adapter.notifyDataSetChanged();
-        history.setPadding(history.getPaddingLeft(), history.getPaddingTop(), history.getPaddingRight(), 64 * (int) density);
         tools.setVisibility(View.VISIBLE);
     }
 
@@ -124,10 +139,10 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         if (!mode) return;
         mode = false;
         Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(com.google.android.material.R.drawable.abc_ic_ab_back_material);
+        clear.setVisible(true);
         adapter.setMode(mode);
         adapter.uncheckAll();
         adapter.notifyDataSetChanged();
-        history.setPadding(history.getPaddingLeft(), history.getPaddingTop(), history.getPaddingRight(), 8 * (int) density);
         tools.setVisibility(View.GONE);
     }
 
@@ -222,7 +237,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         adapter.removeChecked();
         adapter.notifyDataSetChanged();
         Intent data = new Intent();
-        data.setAction(MainActivity.ACTION_REMOVE_FROM_HISTORY);
+        data.setAction(ACTION_REMOVE_FROM_HISTORY);
         data.putExtra(Intent.EXTRA_TEXT, serialize(toRemove));
         setResult(RESULT_OK, data);
     }

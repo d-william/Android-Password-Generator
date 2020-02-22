@@ -1,6 +1,7 @@
-package com.infinity.passwordgenerator;
+package com.infinity.passwordgenerator.dialogs;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.infinity.passwordgenerator.R;
+
 import java.lang.reflect.Field;
 import java.util.Objects;
 
@@ -20,21 +23,29 @@ public class LengthDialog extends DialogFragment {
 
     private int length;
     private Listener listener;
-    NumberPicker numberPicker;
+    private final int min;
+    private final int max;
+    private NumberPicker numberPicker;
 
-    public LengthDialog(int length, Listener listener) {
+    public LengthDialog(int length, Listener listener, int min, int max) {
         this.length = length;
         this.listener = listener;
+        this.min = min;
+        this.max = max;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        // TODO
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()), R.style.AppTheme_Dialog);
-        LayoutInflater factory = LayoutInflater.from(getContext());
-        View layout = factory.inflate(R.layout.length_dialog_layout, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+        builder.setView(R.layout.length_dialog_layout);
         builder.setMessage(R.string.choose_length)
-                .setView(layout)
                 .setPositiveButton(android.R.string.ok, (dialog, id) -> {
                     listener.onLengthDialogPositiveClick(this.length);
                 })
@@ -44,8 +55,8 @@ public class LengthDialog extends DialogFragment {
         dialog.show();
 
         numberPicker = dialog.findViewById(R.id.length);
-        numberPicker.setMinValue(8);
-        numberPicker.setMaxValue(64);
+        numberPicker.setMinValue(min);
+        numberPicker.setMaxValue(max);
         numberPicker.setValue(length);
         numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> this.length = newVal);
         color();

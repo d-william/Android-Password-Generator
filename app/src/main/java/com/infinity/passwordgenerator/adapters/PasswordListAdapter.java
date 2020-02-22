@@ -1,4 +1,4 @@
-package com.infinity.passwordgenerator;
+package com.infinity.passwordgenerator.adapters;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,11 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.infinity.passwordgenerator.R;
+import com.infinity.passwordgenerator.activities.QRCodeActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
-public class HistoryAdapter extends ArrayAdapter<String> {
+public class PasswordListAdapter extends ArrayAdapter<String> {
 
     private final LayoutInflater mInflater;
     private int r1;
@@ -29,8 +31,8 @@ public class HistoryAdapter extends ArrayAdapter<String> {
     private LinkedHashSet<Integer> checked;
     private OnCheckedItemLengthChangeListener listener;
 
-    public HistoryAdapter(@NonNull Context context, int r1, int r2, int textViewResourceId, ClipboardManager clipboard, View activityView) {
-        super(context, 0, textViewResourceId);
+    public PasswordListAdapter(@NonNull Context context, int r1, int r2, ClipboardManager clipboard, View activityView) {
+        super(context, 0, R.id.password);
         mInflater = LayoutInflater.from(context);
         this.r1 = r1;
         this.r2 = r2;

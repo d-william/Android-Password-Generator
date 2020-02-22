@@ -7,12 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/password_container"
-        android:layout_width="256dp"
-        android:layout_height="108dp"
+        android:layout_width="326dp"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin"
         android:background="@drawable/background_container"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,24 +31,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_new_password" />
 
-        <com.infinity.passwordgenerator.PasswordTextView
+        <com.infinity.passwordgenerator.views.PasswordTextView
             android:id="@+id/password"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/new_password"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="20sp"
+            app:minLines="3"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tools_container"
-        android:layout_width="256dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin"
         android:background="@drawable/background_container"
+        app:layout_constraintEnd_toStartOf="@+id/options_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_container">
 
@@ -103,15 +106,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/options_container"
+        android:id="@+id/size_container"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin"
         android:background="@drawable/background_container"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/password_container"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toStartOf="@+id/options_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tools_container">
 
         <ImageView
             android:id="@+id/decrease"
@@ -119,9 +121,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@drawable/clear_tint"
             android:clickable="true"
             android:contentDescription="@string/_1"
             android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/length"
             app:srcCompat="@drawable/ic_less" />
@@ -132,15 +136,17 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="@drawable/clear_tint"
             android:clickable="true"
             android:contentDescription="@string/__1"
             android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/length"
             app:srcCompat="@drawable/ic_plus" />
 
         <SeekBar
-            android:id="@+id/seekBar"
+            android:id="@+id/lengthBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
@@ -151,6 +157,47 @@
             app:layout_constraintEnd_toStartOf="@+id/increase"
             app:layout_constraintStart_toEndOf="@+id/decrease"
             app:layout_constraintTop_toTopOf="@+id/decrease" />
+
+        <TextView
+            android:id="@+id/length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:minWidth="24dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="@string/default_length"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/options_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin"
+        android:background="@drawable/background_container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/password_container"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/regular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:checked="true"
+            android:text="Parameters"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Switch
             android:id="@+id/lower"
@@ -192,40 +239,21 @@
             app:layout_constraintTop_toTopOf="@+id/text_special" />
 
         <TextView
-            android:id="@+id/length"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"
-            android:minWidth="24dp"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:text="@string/default_length"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/text_lower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="@dimen/big_margin"
+            android:layout_marginTop="@dimen/margin"
             android:text="@string/lower_case_letters"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/decrease" />
+            app:layout_constraintTop_toBottomOf="@+id/regular" />
 
         <TextView
             android:id="@+id/text_upper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_margin="@dimen/big_margin"
             android:text="@string/upper_case_letters"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -235,8 +263,7 @@
             android:id="@+id/text_digit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_margin="@dimen/big_margin"
             android:text="@string/digits"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -246,12 +273,31 @@
             android:id="@+id/text_special"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_margin="@dimen/big_margin"
             android:text="@string/special_chars"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_digit" />
+
+        <RadioButton
+            android:id="@+id/custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:text="Custom parameters"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_special" />
+
+        <com.infinity.passwordgenerator.views.CustomChooserView
+            android:id="@+id/chooser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/big_margin"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginEnd="@dimen/margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/custom" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

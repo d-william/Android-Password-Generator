@@ -5,43 +5,43 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="actionOverflowMenuStyle">@style/AppTheme.ToolBar.Menu.Popup</item>
-
-        <item name="snackbarStyle">@style/AppTheme.Snackbar</item>
-        <item name="checkboxStyle">@style/AppTheme.Checkbox</item>
-    </style>
-
-    <style name="AppTheme.Snackbar" parent="Widget.MaterialComponents.Snackbar">
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
-
-    <style name="AppTheme.ToolBar.Menu.Button" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
         <item name="android:tint">@color/colorClear</item>
-    </style>
-
-    <style name="AppTheme.ToolBar.Menu.Popup" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:overlapAnchor">false</item>
-    </style>
-
-    <style name="AppTheme.Night">
-        <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorClear</item>
-        <item name="android:tint">@color/colorClear</item>
-        <item name="colorControlHighlight">@color/grey</item>
-        <item name="android:thumbTint">@drawable/switch_thumb_nigth</item>
+        <item name="actionOverflowMenuStyle">@style/AppTheme.ActionBAr.Menu.Popup</item>
+
+        <item name="snackbarStyle">@style/AppTheme.SnackBar</item>
+        <item name="checkboxStyle">@style/AppTheme.Checkbox</item>
+        <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
+        <item name="radioButtonStyle">@style/AppTheme.RadioButton</item>
+
+        <item name="android:scrollbarTrackVertical">@null</item>
+        <item name="android:scrollbarThumbVertical">@null</item>
     </style>
 
-    <style name="AppTheme.Day">
-        <item name="android:background">@color/colorClear</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+    <style name="AppTheme.SnackBar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@drawable/background_container</item>
+    </style>
+
+    <style name="AppTheme.ActionBAr.Menu.Popup" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:overlapAnchor">false</item>
+        <item name="android:popupBackground">@drawable/background_container</item>
+    </style>
+
+    <style name="AppTheme.Checkbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="buttonTint">@drawable/accent_tint</item>
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:textColorPrimary">@color/colorClear</item>
+        <item name="android:background">@drawable/background_container</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="textColorAlertDialogListItem">@color/colorClear</item>
     </style>
 
-    <style name="AppTheme.Checkbox" parent="Widget.AppCompat.CompoundButton.CheckBox">
-        <item name="buttonTint">@drawable/checkbox_tint</item>
+    <style name="AppTheme.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textColor">@color/colorClear</item>
+        <item name="buttonTint">@drawable/accent_tint</item>
     </style>
 
 </resources>

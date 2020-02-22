@@ -1,5 +1,6 @@
-package com.infinity.passwordgenerator;
+package com.infinity.passwordgenerator.activities;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipData;
@@ -12,7 +13,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.BarcodeFormat;
@@ -20,10 +20,11 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.infinity.passwordgenerator.views.PasswordTextView;
+import com.infinity.passwordgenerator.R;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class QRCodeActivity extends AppCompatActivity {
 
@@ -37,7 +38,12 @@ public class QRCodeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.qrcode);
+        }
 
         Intent intent = getIntent();
         currentPassword = intent.getStringExtra(Intent.EXTRA_TEXT);
