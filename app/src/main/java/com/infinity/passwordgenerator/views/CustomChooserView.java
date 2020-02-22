@@ -41,6 +41,10 @@ public class CustomChooserView extends ConstraintLayout implements CustomSymbols
         loadSymbols();
     }
 
+    public List<CustomSymbols> list() {
+        return new ArrayList<>(this.symbols);
+    }
+
     private void loadSymbols() {
         this.symbols = new ArrayList<>(CustomSymbols.commons());
         // TODO user symbols
@@ -54,10 +58,6 @@ public class CustomChooserView extends ConstraintLayout implements CustomSymbols
         return this.customSymbols == null ? null : this.customSymbols.symbols();
     }
 
-    public CustomSymbols custom() {
-        return this.customSymbols;
-    }
-
     public void custom(int which) {
         if (which == -1) customSymbols = null;
         else customSymbols = this.symbols.get(which);
@@ -66,7 +66,7 @@ public class CustomChooserView extends ConstraintLayout implements CustomSymbols
     }
 
     public DialogFragment getDialog() {
-        return CustomSymbolsDialog.newInstance(this, this.symbols);
+        return new CustomSymbolsDialog();
     }
 
     @Override

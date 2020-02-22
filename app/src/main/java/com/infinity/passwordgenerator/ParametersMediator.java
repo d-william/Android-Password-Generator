@@ -16,7 +16,7 @@ import com.infinity.utils.RandomString;
 
 import java.util.Arrays;
 
-public class ParametersMediator implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener, LengthDialog.Listener, CustomChooserView.DialogListener {
+public class ParametersMediator implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, SeekBar.OnSeekBarChangeListener, CustomChooserView.DialogListener {
 
     public static final int MIN = 8;
     public static final int MAX = 64;
@@ -167,7 +167,7 @@ public class ParametersMediator implements CompoundButton.OnCheckedChangeListene
             this.chooser.getDialog().show(this.context.getSupportFragmentManager(), "custom_menu");
         }
         else if (view == textLength) {
-            new LengthDialog(this.length, this, MIN, MAX).show(this.context.getSupportFragmentManager(), "length");
+            new LengthDialog().show(this.context.getSupportFragmentManager(), "length");
         }
         else {
             int newLength = length;
@@ -222,12 +222,6 @@ public class ParametersMediator implements CompoundButton.OnCheckedChangeListene
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
-
-    @Override
-    public void onLengthDialogPositiveClick(int length) {
-        length(length);
-        determineSymbols();
-    }
 
     @Override
     public void onDialogDismiss() {

@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import com.infinity.passwordgenerator.CustomSymbols;
 import com.infinity.passwordgenerator.R;
 import com.infinity.passwordgenerator.activities.MainActivity;
+import com.infinity.passwordgenerator.views.CustomChooserView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,23 +26,26 @@ public class CustomSymbolsDialog extends DialogFragment implements DialogInterfa
     private Listener listener;
     private boolean isCanceled = false;
     private int which = -1;
+    private MainActivity context;
 
-    public static CustomSymbolsDialog newInstance(Listener listener, List<CustomSymbols> symbols) {
-        CustomSymbolsDialog dialog = new CustomSymbolsDialog();
-        dialog.listener = listener;
-        dialog.symbols = new ArrayList<>(symbols);
-        return dialog;
+    public CustomSymbolsDialog() {
+        setRetainInstance(true);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        // TODO
+        if (context instanceof MainActivity) {
+            this.context = (MainActivity) context;
+        }
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        CustomChooserView v = this.context.findViewById(R.id.chooser);
+        this.listener = v;
+        this.symbols = v.list();
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         String[] symbols_names = new String[symbols.size() + 1];
         symbols_names[0] = getResources().getString(R.string.add_custom);
@@ -78,6 +82,15 @@ public class CustomSymbolsDialog extends DialogFragment implements DialogInterfa
     public void onCancel(DialogInterface dialog) {
         isCanceled = true;
         super.onCancel(dialog);
+    }
+
+    @Override
+    public void onDestroyView() {
+        Dialog dialog = getDialog();
+        if (dialog != null && getRetainInstance()) {
+            dialog.setDismissMessage(null);
+        }
+        super.onDestroyView();
     }
 
     public interface Listener {

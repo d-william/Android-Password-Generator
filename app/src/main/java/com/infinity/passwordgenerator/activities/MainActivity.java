@@ -15,9 +15,9 @@ import androidx.fragment.app.DialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.infinity.passwordgenerator.ParametersMediator;
 import com.infinity.passwordgenerator.dialogs.BulkDialog;
+import com.infinity.passwordgenerator.dialogs.LengthDialog;
 import com.infinity.passwordgenerator.views.PasswordTextView;
 import com.infinity.passwordgenerator.R;
-import com.infinity.utils.RandomString;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,7 +29,7 @@ import java.util.Collection;
 import android.util.Base64;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements BulkDialog.Listener, ParametersMediator.OnParametersChangeListener {
+public class MainActivity extends AppCompatActivity implements BulkDialog.Listener, LengthDialog.Listener, ParametersMediator.OnParametersChangeListener {
 
     private String currentPassword;
     private ArrayList<String> history;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
 
     private PasswordTextView passwordTextView;
 
-    private ParametersMediator mediator;
+    public ParametersMediator mediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
         currentPassword = mediator.nextString();
         passwordTextView.setText(currentPassword);
         history.add(currentPassword);
-        new Exception().printStackTrace();
     }
 
     private boolean reloadContinually(View v) {
@@ -176,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
     }
 
     private void addSymbols() {
-        new Exception().printStackTrace();
         Intent intent = new Intent(MainActivity.this, CustomSymbolsActivity.class);
         intent.setAction(CustomSymbolsActivity.ACTION_ADD_CUSTOM);
         startActivityForResult(intent, 1);
@@ -257,6 +255,12 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
             intent.putExtra(Intent.EXTRA_TEXT, extra);
             startActivity(intent);
         }).start();
+    }
+
+    @Override
+    public void onLengthDialogPositiveClick(int length) {
+        mediator.length(length);
+        mediator.determineSymbols();
     }
 
 }

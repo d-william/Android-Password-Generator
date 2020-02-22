@@ -14,7 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.infinity.passwordgenerator.ParametersMediator;
 import com.infinity.passwordgenerator.R;
+import com.infinity.passwordgenerator.activities.MainActivity;
 
 import java.lang.reflect.Field;
 import java.util.Objects;
@@ -26,23 +28,26 @@ public class LengthDialog extends DialogFragment {
     private final int min;
     private final int max;
     private NumberPicker numberPicker;
+    private MainActivity context;
 
-    public LengthDialog(int length, Listener listener, int min, int max) {
-        this.length = length;
-        this.listener = listener;
-        this.min = min;
-        this.max = max;
+    public LengthDialog() {
+        this.min = ParametersMediator.MIN;
+        this.max = ParametersMediator.MAX;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        // TODO
+        if (context instanceof MainActivity) {
+            this.listener = (MainActivity) context;
+            this.context = (MainActivity) context;
+        }
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        this.length = context.mediator.length();
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         builder.setView(R.layout.length_dialog_layout);
         builder.setMessage(R.string.choose_length)

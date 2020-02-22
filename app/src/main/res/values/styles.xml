@@ -14,6 +14,7 @@
         <item name="checkboxStyle">@style/AppTheme.Checkbox</item>
         <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
         <item name="radioButtonStyle">@style/AppTheme.RadioButton</item>
+        <item name="editTextStyle">@style/AppTheme.EditText</item>
 
         <item name="android:scrollbarTrackVertical">@null</item>
         <item name="android:scrollbarThumbVertical">@null</item>
@@ -42,6 +43,12 @@
     <style name="AppTheme.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textColor">@color/colorClear</item>
         <item name="buttonTint">@drawable/accent_tint</item>
+    </style>
+
+    <style name="AppTheme.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/colorClear</item>
+        <item name="android:textColorHint">@color/colorClearDisable</item>
+        <item name="android:backgroundTint">@drawable/edit_tint</item>
     </style>
 
 </resources>
