@@ -7,17 +7,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
-import android.widget.TextView;
 
+import com.infinity.passwordgenerator.CheckboxExpandableListAdapter;
 import com.infinity.passwordgenerator.R;
-import com.infinity.passwordgenerator.Test;
 import com.infinity.utils.RandomString;
 
 import java.util.ArrayList;
@@ -61,29 +59,7 @@ public class CustomSymbolsActivity extends AppCompatActivity {
 
         /// ---------------------------------
 
-        List<Map<String, String>> groupData = new ArrayList<Map<String, String>>();
-        List<List<Map<String, String>>> childData = new ArrayList<List<Map<String, String>>>();
-        for (int i = 0; i < group.length; i++) {
-            Map<String, String> curGroupMap = new HashMap<String, String>();
-            groupData.add(curGroupMap);
-            curGroupMap.put(NAME, group[i]);
-
-            List<Map<String, String>> children = new ArrayList<Map<String, String>>();
-            for (int j = 0; j < child[i].length(); j++) {
-                Map<String, String> curChildMap = new HashMap<String, String>();
-                children.add(curChildMap);
-                curChildMap.put(NAME, String.valueOf(child[i].charAt(j)));
-            }
-            childData.add(children);
-        }
-
-        mAdapter = new SimpleExpandableListAdapter(this, groupData,
-                R.layout.exp_list_group_item,
-                new String[] { NAME }, new int[] { R.id.text1 },
-                childData, android.R.layout.simple_expandable_list_item_2,
-                new String[] { NAME }, new int[] { android.R.id.text1 });
-
-        selection.setAdapter(mAdapter);
+        selection.setAdapter(new CheckboxExpandableListAdapter(this));
 
         /// ---------------------------------
 
@@ -150,13 +126,6 @@ public class CustomSymbolsActivity extends AppCompatActivity {
 
 
     /// ---------------------------------
-
-    private static final String NAME = "NAME";
-
-    private ExpandableListAdapter mAdapter;
-
-    private String group[] = {"Lower letters" , "Upper letters", "Digits", "Special characters"};
-    private String[] child = { RandomString.LOWER_CASE_LETTERS, RandomString.UPPER_CASE_LETTERS, RandomString.DIGITS, RandomString.SPECIAL_CHARACTERS };
 
 
     /// ---------------------------------
