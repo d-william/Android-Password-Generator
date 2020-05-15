@@ -12,6 +12,12 @@ import com.infinity.passwordgenerator.CustomSymbols;
 import com.infinity.passwordgenerator.R;
 import com.infinity.passwordgenerator.dialogs.CustomSymbolsDialog;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +51,20 @@ public class CustomChooserView extends ConstraintLayout implements CustomSymbols
         return new ArrayList<>(this.symbols);
     }
 
-    private void loadSymbols() {
+    public void loadSymbols() {
         this.symbols = new ArrayList<>(CustomSymbols.commons());
-        // TODO user symbols
+        File app = getContext().getFilesDir();
+        File symbolsDir = new File(app, "symbols");
+        symbolsDir.mkdirs();
+        for (File f : symbolsDir.listFiles()) {
+            BufferedReader buff;
+            try {
+                buff = new BufferedReader(new FileReader(f));
+                this.symbols.add(new CustomSymbols(f.getName(), buff.readLine()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean hasSymbols() {
@@ -89,6 +106,14 @@ public class CustomChooserView extends ConstraintLayout implements CustomSymbols
 
     public int selected() {
         return this.symbols.indexOf(customSymbols);
+    }
+
+    public int indexOf(String name) {
+        if (name == null) return -1;
+        for (int i = 0; i < this.symbols.size(); i++) {
+            if (name.equals(this.symbols.get(i).name())) return i;
+        }
+        return -1;
     }
 
     public interface DialogListener {

@@ -183,11 +183,12 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
     private void createSymbols() {
         Intent intent = new Intent(MainActivity.this, CustomSymbolsActivity.class);
         intent.setAction(CustomSymbolsActivity.ACTION_ADD_CUSTOM);
-        startActivity(intent);
+        startActivityForResult(intent, 2);
     }
 
     private void editCustom() {
-        // TODO
+        Intent intent = new Intent(MainActivity.this, CustomSymbolsListActivity.class);
+        startActivity(intent);
     }
 
     private String serialize(ArrayList<String> passwords) {
@@ -225,19 +226,28 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 if (data != null) {
-                    if (PasswordListActivity.ACTION_CLEAR_HISTORY.equals(data.getAction())) clearHistory();
-                    else if (PasswordListActivity.ACTION_REMOVE_FROM_HISTORY.equals(data.getAction())) history.removeAll(deserialize(data.getStringExtra(Intent.EXTRA_TEXT)));
+                    if (PasswordListActivity.ACTION_CLEAR_HISTORY.equals(data.getAction()))
+                        clearHistory();
+                    else if (PasswordListActivity.ACTION_REMOVE_FROM_HISTORY.equals(data.getAction()))
+                        history.removeAll(deserialize(data.getStringExtra(Intent.EXTRA_TEXT)));
                 }
             }
         }
         else if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                // TODO
+                mediator.reloadChooserSymbols();
+                mediator.selectCustoms(data.getStringExtra("name"));
             }
             else {
-                // TODO
+                mediator.regular();
             }
         }
+        else if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                mediator.reloadChooserSymbols();
+            }
+        }
+        else super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void clearHistory() {

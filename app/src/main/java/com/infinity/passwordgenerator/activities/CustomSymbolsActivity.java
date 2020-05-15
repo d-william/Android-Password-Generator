@@ -10,28 +10,38 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
 
-import com.infinity.passwordgenerator.CheckboxExpandableListAdapter;
+import com.infinity.passwordgenerator.CustomSymbols;
+import com.infinity.passwordgenerator.adapters.CheckboxExpandableListAdapter;
 import com.infinity.passwordgenerator.R;
-import com.infinity.utils.RandomString;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class CustomSymbolsActivity extends AppCompatActivity {
+public class CustomSymbolsActivity extends AppCompatActivity implements CheckboxExpandableListAdapter.Listener {
 
     public static final String ACTION_ADD_CUSTOM = "android.intent.action.ADD_CUSTOM";
+    public static final String ACTION_EDIT_CUSTOM = "android.intent.action.EDIT_CUSTOM";
 
     private EditText name;
     private EditText symbols;
 
     private MenuItem item;
     private ExpandableListView selection;
+    private CheckboxExpandableListAdapter adapter;
+
+    private boolean editMode = false;
+
+    private ArrayList<String> names;
+    private CustomSymbols cs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,21 +55,53 @@ public class CustomSymbolsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_clear);
             if (ACTION_ADD_CUSTOM.equals(intent.getAction())) actionBar.setTitle(R.string.add_custom);
-            else actionBar.setTitle(intent.getStringExtra("name"));
+            else {
+
+                File app = getFilesDir();
+                File symbolsDir = new File(app, "symbols");
+                symbolsDir.mkdirs();
+                String cs_name = intent.getStringExtra("name");
+                for (File f : symbolsDir.listFiles()) {
+                    if (f.getName().equals(cs_name)) {
+                        BufferedReader buff;
+                        try {
+                            buff = new BufferedReader(new FileReader(f));
+                            cs = new CustomSymbols(f.getName(), buff.readLine());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                }
+                if (cs == null) finish();
+
+                actionBar.setTitle(cs.name());
+                editMode = true;
+            }
         }
 
         name = findViewById(R.id.name);
-        name.addTextChangedListener(new NameTextWatcher());
-
+        if (editMode) name.setText(cs.name());
         symbols = findViewById(R.id.symbols);
-        symbols.setText(RandomString.LOWER_CASE_LETTERS + RandomString.UPPER_CASE_LETTERS + RandomString.DIGITS);
-        symbols.addTextChangedListener(new NameTextWatcher());
-
         selection = findViewById(R.id.selection);
+
+        File app = getFilesDir();
+        File symbolsDir = new File(app, "symbols");
+        symbolsDir.mkdirs();
+        names = new ArrayList<>();
+        for (File f : symbolsDir.listFiles()) {
+            names.add(f.getName());
+        }
 
         /// ---------------------------------
 
-        selection.setAdapter(new CheckboxExpandableListAdapter(this));
+        adapter = new CheckboxExpandableListAdapter(this);
+        selection.setAdapter(adapter);
+        adapter.setListener(this);
+        if (editMode) symbols.setText(cs.symbols());
+        else symbols.setText(adapter.getSymbols());
+        name.addTextChangedListener(new NameTextWatcher());
+        symbols.addTextChangedListener(new NameTextWatcher());
 
         /// ---------------------------------
 
@@ -82,15 +124,31 @@ public class CustomSymbolsActivity extends AppCompatActivity {
     }
 
     private void add() {
-        // TODO save in storage
+        File app = getFilesDir();
+        File symbolsDir = new File(app, "symbols");
+        symbolsDir.mkdirs();
+        File symbolsFile = new File(symbolsDir, name.getText().toString());
+        try {
+            symbolsFile.createNewFile();
+            try (PrintStream out = new PrintStream(new FileOutputStream(symbolsFile))) {
+                out.print(symbols.getText().toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Intent data = new Intent();
         data.putExtra("name", name.getText().toString());
-        data.putExtra("symbols", symbols.getText().toString());
         setResult(RESULT_OK, data);
         finish();
     }
 
+    @Override
+    public void onSymbolsChange() {
+        symbols.setText(adapter.getSymbols());
+    }
+
     private class NameTextWatcher implements TextWatcher {
+
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -103,31 +161,17 @@ public class CustomSymbolsActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            item.setEnabled(!s.toString().equals(""));
+            checkNameAndSymbols();
         }
+
     }
 
-    private class SymbolsTextWatcher implements TextWatcher {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            item.setEnabled(!s.toString().equals(""));
+    private void checkNameAndSymbols() {
+        item.setEnabled(name.getText().length() > 0 && symbols.getText().length() > 0);
+        if (names.contains(name.getText().toString())) {
+            item.setEnabled(false);
+            name.setError("Name already used");
         }
     }
-
-
-    /// ---------------------------------
-
-
-    /// ---------------------------------
 
 }

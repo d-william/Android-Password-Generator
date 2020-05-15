@@ -184,7 +184,6 @@ public class ParametersMediator implements CompoundButton.OnCheckedChangeListene
 
     @Override
     public void onCheckedChanged(CompoundButton button, boolean isChecked) {
-        Log.i("a","a");
         verifyStates();
         if (isChecked) {
             if (button == regular) {
@@ -233,7 +232,6 @@ public class ParametersMediator implements CompoundButton.OnCheckedChangeListene
 
     @Override
     public void onDialogCanceled() {
-        boolean t = !this.chooser.hasSymbols();
         if (!this.chooser.hasSymbols()) this.regular.setChecked(true);
     }
 
@@ -258,6 +256,20 @@ public class ParametersMediator implements CompoundButton.OnCheckedChangeListene
 
     private void disableCustom() {
         this.chooser.setEnabled(false);
+    }
+
+    public void regular() {
+        this.regular.setChecked(true);
+        determineSymbols();
+    }
+
+    public void reloadChooserSymbols() {
+        this.chooser.loadSymbols();
+    }
+
+    public void selectCustoms(String name) {
+        this.chooser.custom(this.chooser.indexOf(name));
+        determineSymbols();
     }
 
     public interface OnParametersChangeListener {
