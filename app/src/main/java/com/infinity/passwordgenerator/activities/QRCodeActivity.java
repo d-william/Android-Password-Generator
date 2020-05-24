@@ -95,6 +95,12 @@ public class QRCodeActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     private void copy() {
         ClipData clip = ClipData.newPlainText("password", currentPassword);
         clipboard.setPrimaryClip(clip);

@@ -51,7 +51,7 @@ public class CustomChooserView extends ConstraintLayout implements CustomSymbols
         return new ArrayList<>(this.symbols);
     }
 
-    public void loadSymbols() {
+    public boolean loadSymbols() {
         this.symbols = new ArrayList<>(CustomSymbols.commons());
         File app = getContext().getFilesDir();
         File symbolsDir = new File(app, "symbols");
@@ -65,6 +65,7 @@ public class CustomChooserView extends ConstraintLayout implements CustomSymbols
                 e.printStackTrace();
             }
         }
+        return this.symbols.contains(customSymbols);
     }
 
     public boolean hasSymbols() {
@@ -88,7 +89,7 @@ public class CustomChooserView extends ConstraintLayout implements CustomSymbols
 
     @Override
     public void onDismiss(int which, boolean canceled) {
-        custom(which);
+        if (!canceled) custom(which);
         if (canceled && listener != null) listener.onDialogCanceled();
         else if (listener != null) listener.onDialogDismiss();
     }
@@ -114,6 +115,11 @@ public class CustomChooserView extends ConstraintLayout implements CustomSymbols
             if (name.equals(this.symbols.get(i).name())) return i;
         }
         return -1;
+    }
+
+    public void reset() {
+        loadSymbols();
+        custom(-1);
     }
 
     public interface DialogListener {

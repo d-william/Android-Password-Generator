@@ -1,6 +1,7 @@
 package com.infinity.passwordgenerator.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -28,6 +29,10 @@ public class CheckboxExpandableListAdapter extends SimpleExpandableListAdapter {
     private static final List<Map<String, String>> GROUP_DATA;
     private static final List<List<Map<String, String>>> CHILD_DATA;
 
+    private static final Map<Character, Integer> MATCHES;
+
+    private static final char[] spes = {33, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 58, 59, 60, 61, 62, 63, 64, 91, 93, 94, 95, 96, 123, 124, 125, 126, 34};
+
     static {
         List<Map<String, String>> groupData = new ArrayList<>();
         List<List<Map<String, String>>> childData = new ArrayList<>();
@@ -47,6 +52,12 @@ public class CheckboxExpandableListAdapter extends SimpleExpandableListAdapter {
 
         GROUP_DATA = Collections.unmodifiableList(groupData);
         CHILD_DATA = Collections.unmodifiableList(childData);
+
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < spes.length; i++) {
+            map.put(spes[i], i);
+        }
+        MATCHES = Collections.unmodifiableMap(map);
     }
 
     public interface Listener {
@@ -158,6 +169,41 @@ public class CheckboxExpandableListAdapter extends SimpleExpandableListAdapter {
         for (int i = 0; i < checks_special.length; i++)
             if (checks_special[i]) sb.append(RandomString.SPECIAL_CHARACTERS.charAt(i));
         return sb.toString();
+    }
+
+    public void setSymbols(String symbols) {
+        //for (char c : symbols.toCharArray()) Log.i("LOG", "" + (int) c);
+        Arrays.fill(checks_lower, false);
+        Arrays.fill(checks_upper, false);
+        Arrays.fill(checks_digit, false);
+        Arrays.fill(checks_special, false);
+        for (char c : symbols.toCharArray()) {
+            int i = c - 97;
+            try {
+                checks_lower[i] = true;
+            }
+            catch (Exception ignored) {}
+        }
+        for (char c : symbols.toCharArray()) {
+            int i = c - 65;
+            try {
+                checks_upper[i] = true;
+            }
+            catch (Exception ignored) {}
+        }
+        for (char c : symbols.toCharArray()) {
+            int i = c - 48;
+            try {
+                checks_digit[i] = true;
+            }
+            catch (Exception ignored) {}
+        }
+        for (char c : symbols.toCharArray()) {
+            Integer i = MATCHES.get(c);
+            if (i == null) continue;
+            checks_special[i] = true;
+        }
+        if (listener != null) listener.onSymbolsChange();
     }
 
     public void setListener(Listener listener) {

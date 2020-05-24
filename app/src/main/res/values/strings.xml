@@ -22,4 +22,7 @@
     <string name="add_custom">Add new symbols</string>
     <string name="edit_custom">Edit symbols</string>
     <string name="choose">Choose custom symbols</string>
+    <string name="add">Add</string>
+    <string name="parameters">Parameters</string>
+    <string name="custom_parameters">Custom parameters</string>
 </resources>

@@ -19,23 +19,23 @@ import java.util.ArrayList;
 
 public class SymbolsAdapter extends ArrayAdapter<String> {
 
-    public SymbolsAdapter(@NonNull Context context, ArrayList<String> datas) {
+    public interface OnClickListener {
+        void onClick(String name);
+    }
+
+    private OnClickListener listener;
+
+    public SymbolsAdapter(@NonNull Context context, ArrayList<String> datas, OnClickListener listener) {
         super(context, R.layout.item_edit_symbols, R.id.textView, datas);
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View v = super.getView(position, convertView, parent);
-        ImageView edit = v.findViewById(R.id.edit);
         ImageView delete = v.findViewById(R.id.delete);
-        View.OnClickListener listener = view -> {
-            Intent intent = new Intent(getContext(), CustomSymbolsActivity.class);
-            intent.putExtra("name", getItem(position));
-            getContext().startActivity(intent);
-        };
-        v.setOnClickListener(listener);
-        edit.setOnClickListener(listener);
+        v.setOnClickListener(view -> this.listener.onClick(getItem(position)));
         delete.setOnClickListener(view -> {
             File app = getContext().getFilesDir();
             File symbolsDir = new File(app, "symbols");
@@ -44,10 +44,11 @@ public class SymbolsAdapter extends ArrayAdapter<String> {
             for (File f : symbolsDir.listFiles()) {
                 if (f.getName().equals(name)) {
                     f.delete();
+                    remove(name);
+                    notifyDataSetChanged();
                     return;
                 }
             }
-            notifyDataSetChanged();
         });
         return v;
     }

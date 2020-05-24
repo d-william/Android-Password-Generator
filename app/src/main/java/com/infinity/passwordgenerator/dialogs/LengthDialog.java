@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -14,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import com.infinity.passwordgenerator.ParametersMediator;
+import com.infinity.passwordgenerator.mediators.ParametersMediator;
 import com.infinity.passwordgenerator.R;
 import com.infinity.passwordgenerator.activities.MainActivity;
 
@@ -28,32 +27,28 @@ public class LengthDialog extends DialogFragment {
     private final int min;
     private final int max;
     private NumberPicker numberPicker;
-    private MainActivity context;
 
-    public LengthDialog() {
+    public LengthDialog(int length) {
         this.min = ParametersMediator.MIN;
         this.max = ParametersMediator.MAX;
+        this.length = length;
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof MainActivity) {
             this.listener = (MainActivity) context;
-            this.context = (MainActivity) context;
         }
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        this.length = context.mediator.length();
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         builder.setView(R.layout.length_dialog_layout);
         builder.setMessage(R.string.choose_length)
-                .setPositiveButton(android.R.string.ok, (dialog, id) -> {
-                    listener.onLengthDialogPositiveClick(this.length);
-                })
+                .setPositiveButton(android.R.string.ok, (dialog, id) -> listener.onLengthDialogPositiveClick(this.length))
                 .setNegativeButton(android.R.string.cancel, null);
         AlertDialog dialog = builder.create();
 

@@ -31,11 +31,11 @@ public class PasswordListAdapter extends ArrayAdapter<String> {
     private LinkedHashSet<Integer> checked;
     private OnCheckedItemLengthChangeListener listener;
 
-    public PasswordListAdapter(@NonNull Context context, int r1, int r2, ClipboardManager clipboard, View activityView) {
+    public PasswordListAdapter(@NonNull Context context, ClipboardManager clipboard, View activityView) {
         super(context, 0, R.id.password);
         mInflater = LayoutInflater.from(context);
-        this.r1 = r1;
-        this.r2 = r2;
+        this.r1 = R.layout.history_item;
+        this.r2 = R.layout.history_item_mode;
         this.clipboard = clipboard;
         this.activityView = activityView;
         this.mode = false;
@@ -59,6 +59,14 @@ public class PasswordListAdapter extends ArrayAdapter<String> {
             convertView.findViewById(R.id.qrcode).setOnClickListener(v -> qrcode(position));
         }
         return convertView;
+    }
+
+    public LinkedHashSet<Integer> getCheckedSet() {
+        return this.checked;
+    }
+
+    public void setCheckedSet(LinkedHashSet<Integer> checked) {
+        this.checked = new LinkedHashSet<>(checked);
     }
 
     private void copy(int position) {
