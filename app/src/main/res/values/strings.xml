@@ -3,7 +3,7 @@
     <string name="new_password">new_password</string>
     <string name="copy">copy</string>
     <string name="share">share</string>
-    <string name="qrcode">qrcode</string>
+    <string name="qrcode">QR Code</string>
     <string name="pdf">pdf</string>
     <string name="_1">-1</string>
     <string name="__1">+1</string>
@@ -12,10 +12,14 @@
     <string name="digits">Digits</string>
     <string name="special_chars">Special characters</string>
     <string name="hystory">Hystory</string>
-    <string name="bulk">Bulk</string>
-    <string name="choose_length">Choose a length</string>
+    <string name="bulk">Bulk generation</string>
+    <string name="choose_length">Length</string>
     <string name="cleay_history">Cleay history</string>
     <string name="delete">delete</string>
     <string name="select_all">select all</string>
     <string name="choose_bulk">Choose number</string>
+    <string name="default_length">8</string>
+    <string name="add_custom">Add new symbols</string>
+    <string name="edit_custom">Edit symbols</string>
+    <string name="choose">Choose custom symbols</string>
 </resources>

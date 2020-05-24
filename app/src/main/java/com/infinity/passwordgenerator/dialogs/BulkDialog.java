@@ -1,6 +1,7 @@
-package com.infinity.passwordgenerator;
+package com.infinity.passwordgenerator.dialogs;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,8 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
+import com.infinity.passwordgenerator.R;
+import com.infinity.passwordgenerator.activities.MainActivity;
 
 import java.util.Objects;
 
@@ -23,14 +28,22 @@ public class BulkDialog extends DialogFragment implements TextWatcher {
     private EditText size;
     private AlertDialog dialog;
 
-    public BulkDialog(Listener listener) {
-        this.listener = listener;
+    public static BulkDialog newInstance() {
+        return new BulkDialog();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            this.listener = (MainActivity) context;
+        }
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()), R.style.AppTheme_Dialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         LayoutInflater factory = LayoutInflater.from(getContext());
         View layout = factory.inflate(R.layout.bulk_dialog_layout, null);
         builder.setMessage(R.string.choose_bulk)

@@ -16,7 +16,7 @@
         android:ems="10"
         android:digits="0123456789"
         android:inputType="number"
-        android:textColor="@color/colorClear"
+        android:hint="100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
