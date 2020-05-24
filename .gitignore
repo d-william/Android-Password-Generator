@@ -8,3 +8,6 @@
 .externalNativeBuild
 .cxx
 .config/
+gradle/
+gradlew
+gradlew.bat
