@@ -1,8 +1,5 @@
 package com.infinity.passwordgenerator.activities;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -11,23 +8,22 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.infinity.passwordgenerator.R;
 import com.infinity.passwordgenerator.adapters.PasswordListAdapter;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 
 public class PasswordListActivity extends AppCompatActivity implements PasswordListAdapter.OnCheckedItemLengthChangeListener {
@@ -40,10 +36,8 @@ public class PasswordListActivity extends AppCompatActivity implements PasswordL
     private ClipboardManager clipboard;
     private PasswordListAdapter adapter;
     private boolean mode;
-    private float density;
     private ArrayList<String> toRemove;
 
-    private ListView history;
     private ImageView copy;
     private ImageView share;
     private ImageView delete;
@@ -65,35 +59,51 @@ public class PasswordListActivity extends AppCompatActivity implements PasswordL
             else actionBar.setTitle(R.string.hystory);
         }
 
-        String historySerialized = intent.getStringExtra(Intent.EXTRA_TEXT);
-
+        ArrayList<String> list = intent.getStringArrayListExtra(Intent.EXTRA_TEXT);
         setResult(RESULT_CANCELED, new Intent());
-
-        if (historySerialized == null) finish();
+        if (list == null) finish();
 
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        density = getResources().getDisplayMetrics().density;
         toRemove = new ArrayList<>();
 
         copy = findViewById(R.id.copy);
         share = findViewById(R.id.share);
         delete = findViewById(R.id.delete);
         check = findViewById(R.id.check);
-
         tools = findViewById(R.id.tools_container);
 
-        disableButton();
+        adapter = new PasswordListAdapter(this, clipboard, findViewById(R.id.activity));
+        adapter.addAll(list);
 
-        mode = false;
-        adapter = new PasswordListAdapter(this, R.layout.history_item, R.layout.history_item_mode, clipboard, findViewById(R.id.activity));
-        adapter.addAll(deserialize(historySerialized));
+        if (savedInstanceState != null) {
+            mode = savedInstanceState.getBoolean("mode", false);
+            if (mode) {
+                enableButton();
+                adapter.setCheckedSet(new LinkedHashSet<>(savedInstanceState.getIntegerArrayList("checkedStates")));
+                enableEditMode();
+            }
+            else {
+                disableButton();
+            }
+        }
+        else {
+            mode = false;
+        }
+
         adapter.setOnCheckedItemLengthChangeListener(this);
-        history = findViewById(R.id.history);
+        ListView history = findViewById(R.id.history);
         history.setAdapter(adapter);
         history.setOnItemLongClickListener((parent, view, position, id) -> {
             enableEditMode(position);
             return false;
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState (@NonNull Bundle outState) {
+        outState.putBoolean("mode", mode);
+        outState.putIntegerArrayList("checkedStates", new ArrayList<>(adapter.getCheckedSet()));
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -135,6 +145,14 @@ public class PasswordListActivity extends AppCompatActivity implements PasswordL
         tools.setVisibility(View.VISIBLE);
     }
 
+    private void enableEditMode() {
+        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable.ic_clear);
+        //clear.setVisible(false);
+        adapter.setMode(mode);
+        adapter.notifyDataSetChanged();
+        tools.setVisibility(View.VISIBLE);
+    }
+
     private void disableEditMode() {
         if (!mode) return;
         mode = false;
@@ -149,36 +167,6 @@ public class PasswordListActivity extends AppCompatActivity implements PasswordL
     private void vibrate() {
         if (Build.VERSION.SDK_INT >= 26) ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
         else ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(150);
-    }
-
-    private String serialize(ArrayList<String> passwords) {
-        String result = null;
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(passwords);
-            oos.close();
-            result = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-        }
-        catch (Exception e) {
-
-        }
-        return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Collection<String> deserialize(String historySerialized) {
-        Collection<String> history = null;
-        try {
-            byte[] decode = Base64.decode(historySerialized, Base64.DEFAULT);
-            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(decode));
-            history = (Collection<String>) ois.readObject();
-            ois.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return history;
     }
 
     @Override
@@ -238,7 +226,7 @@ public class PasswordListActivity extends AppCompatActivity implements PasswordL
         adapter.notifyDataSetChanged();
         Intent data = new Intent();
         data.setAction(ACTION_REMOVE_FROM_HISTORY);
-        data.putExtra(Intent.EXTRA_TEXT, serialize(toRemove));
+        data.putStringArrayListExtra(Intent.EXTRA_TEXT, toRemove);
         setResult(RESULT_OK, data);
     }
 

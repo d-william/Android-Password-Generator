@@ -57,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_container">
 
-            <ImageView
+        <ImageView
                 android:id="@+id/copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
             android:checked="true"
-            android:text="Parameters"
+            android:text="@string/parameters"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lengthBar" />
 
@@ -272,7 +272,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
-            android:text="Custom parameters"
+            android:text="@string/custom_parameters"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_special" />
 

@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/choose"
         android:tint="@drawable/clear_tint"
+        android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="@+id/choice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/choice"

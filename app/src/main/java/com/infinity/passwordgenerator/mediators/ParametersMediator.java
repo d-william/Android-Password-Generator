@@ -1,6 +1,5 @@
-package com.infinity.passwordgenerator;
+package com.infinity.passwordgenerator.mediators;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -20,8 +19,8 @@ public class ParametersMediator implements CompoundButton.OnCheckedChangeListene
 
     public static final int MIN = 8;
     public static final int MAX = 64;
-    public static final boolean DEFAULT_REGULAR = false;
-    public static final boolean DEFAULT_CUSTOM = true;
+    private static final boolean DEFAULT_REGULAR = false;
+    private static final boolean DEFAULT_CUSTOM = true;
     public static final boolean[] DEFAULT_STATES = {DEFAULT_REGULAR, true, true, true, false};
     private static final String DEFAULT_SYMBOLS = RandomString.LOWER_CASE_LETTERS + RandomString.UPPER_CASE_LETTERS + RandomString.DIGITS;
 
@@ -167,7 +166,7 @@ public class ParametersMediator implements CompoundButton.OnCheckedChangeListene
             this.chooser.getDialog().show(this.context.getSupportFragmentManager(), "custom_menu");
         }
         else if (view == textLength) {
-            new LengthDialog().show(this.context.getSupportFragmentManager(), "length");
+            new LengthDialog(length()).show(this.context.getSupportFragmentManager(), "length");
         }
         else {
             int newLength = length;
@@ -263,13 +262,17 @@ public class ParametersMediator implements CompoundButton.OnCheckedChangeListene
         determineSymbols();
     }
 
-    public void reloadChooserSymbols() {
-        this.chooser.loadSymbols();
+    public boolean reloadChooserSymbols() {
+        return this.chooser.loadSymbols();
     }
 
     public void selectCustoms(String name) {
         this.chooser.custom(this.chooser.indexOf(name));
         determineSymbols();
+    }
+
+    public void resetChooser() {
+        this.chooser.reset();
     }
 
     public interface OnParametersChangeListener {

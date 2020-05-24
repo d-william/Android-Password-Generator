@@ -1,10 +1,13 @@
 package com.infinity.passwordgenerator;
 
+import androidx.annotation.Nullable;
+
 import com.infinity.utils.RandomString;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CustomSymbols implements Serializable {
 
@@ -30,6 +33,15 @@ public class CustomSymbols implements Serializable {
 
     public void symbols(String symbols) {
         this.symbols = symbols;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomSymbols symbols1 = (CustomSymbols) o;
+        return Objects.equals(name, symbols1.name) &&
+                Objects.equals(symbols, symbols1.symbols);
     }
 
     public static List<CustomSymbols> commons() {

@@ -8,26 +8,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.infinity.passwordgenerator.ParametersMediator;
+import com.infinity.passwordgenerator.R;
 import com.infinity.passwordgenerator.dialogs.BulkDialog;
 import com.infinity.passwordgenerator.dialogs.LengthDialog;
+import com.infinity.passwordgenerator.mediators.ParametersMediator;
 import com.infinity.passwordgenerator.views.PasswordTextView;
-import com.infinity.passwordgenerator.R;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-
-import android.util.Base64;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements BulkDialog.Listener, LengthDialog.Listener, ParametersMediator.OnParametersChangeListener {
 
@@ -38,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
 
     private PasswordTextView passwordTextView;
 
-    public ParametersMediator mediator;
+    private ParametersMediator mediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
     }
 
     @Override
-    protected void onSaveInstanceState (Bundle outState) {
+    protected void onSaveInstanceState (@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("password", currentPassword);
         outState.putStringArrayList("history", history);
@@ -135,10 +129,8 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
     }
 
     private void copy() {
-        ClipData clip = ClipData.newPlainText("password", currentPassword);
-        clipboard.setPrimaryClip(clip);
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.activity), "Password copied !", Snackbar.LENGTH_LONG);
-        snackbar.show();
+        clipboard.setPrimaryClip(ClipData.newPlainText("password", currentPassword));
+        Snackbar.make(findViewById(R.id.activity), "Password copied !", Snackbar.LENGTH_LONG).show();
     }
 
     private void share() {
@@ -162,10 +154,9 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
     }
 
     private void history() {
-        String extra = serialize(history);
         Intent intent = new Intent(MainActivity.this, PasswordListActivity.class);
         intent.setAction(PasswordListActivity.ACTION_HISTORY);
-        intent.putExtra(Intent.EXTRA_TEXT, extra);
+        intent.putStringArrayListExtra(Intent.EXTRA_TEXT, history);
         startActivityForResult(intent, 0);
     }
 
@@ -188,37 +179,7 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
 
     private void editCustom() {
         Intent intent = new Intent(MainActivity.this, CustomSymbolsListActivity.class);
-        startActivity(intent);
-    }
-
-    private String serialize(ArrayList<String> passwords) {
-        String result = null;
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(passwords);
-            oos.close();
-            result = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-        }
-        catch (Exception e) {
-
-        }
-        return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Collection<String> deserialize(String historySerialized) {
-        Collection<String> history = null;
-        try {
-            byte[] decode = Base64.decode(historySerialized, Base64.DEFAULT);
-            ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(decode));
-            history = (Collection<String>) ois.readObject();
-            ois.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return history;
+        startActivityForResult(intent, 3);
     }
 
     @Override
@@ -229,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
                     if (PasswordListActivity.ACTION_CLEAR_HISTORY.equals(data.getAction()))
                         clearHistory();
                     else if (PasswordListActivity.ACTION_REMOVE_FROM_HISTORY.equals(data.getAction()))
-                        history.removeAll(deserialize(data.getStringExtra(Intent.EXTRA_TEXT)));
+                        history.removeAll(data.getStringArrayListExtra(Intent.EXTRA_TEXT));
                 }
             }
         }
@@ -247,7 +208,13 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
                 mediator.reloadChooserSymbols();
             }
         }
-        else super.onActivityResult(requestCode, resultCode, data);
+        else if (requestCode == 3) {
+            if(!mediator.reloadChooserSymbols()) {
+                mediator.regular();
+                mediator.resetChooser();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void clearHistory() {
@@ -259,10 +226,9 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
         new Thread(() -> {
             ArrayList<String> passwords = new ArrayList<>(size);
             for (int i = 0; i < size; i++) passwords.add(mediator.nextString());
-            String extra = serialize(passwords);
             Intent intent = new Intent(MainActivity.this, PasswordListActivity.class);
             intent.setAction(PasswordListActivity.ACTION_BULK);
-            intent.putExtra(Intent.EXTRA_TEXT, extra);
+            intent.putStringArrayListExtra(Intent.EXTRA_TEXT, passwords);
             startActivity(intent);
         }).start();
     }
