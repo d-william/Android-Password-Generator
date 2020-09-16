@@ -31,7 +31,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_new_password" />
 
-        <com.infinity.passwordgenerator.views.PasswordTextView
+        <com.dwilliam.passwordgenerator.views.PasswordTextView
             android:id="@+id/password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="20sp"
-            app:minLines="3"/>
+            app:minLines="4" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -106,7 +106,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/size_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin"
@@ -121,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@drawable/clear_tint"
+            app:tint="@drawable/clear_tint"
             android:clickable="true"
             android:contentDescription="@string/_1"
             android:focusable="true"
@@ -136,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@drawable/clear_tint"
+            app:tint="@drawable/clear_tint"
             android:clickable="true"
             android:contentDescription="@string/__1"
             android:focusable="true"
@@ -195,11 +194,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
             android:checked="true"
-            android:text="Parameters"
+            android:text="@string/parameters"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/lower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -209,7 +208,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_lower" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/upper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -219,7 +218,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_upper" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/digit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -229,7 +228,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_digit" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/special"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -284,11 +283,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin"
-            android:text="Custom parameters"
+            android:text="@string/custom_parameters"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_special" />
 
-        <com.infinity.passwordgenerator.views.CustomChooserView
+        <com.dwilliam.passwordgenerator.views.CustomChooserView
             android:id="@+id/chooser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

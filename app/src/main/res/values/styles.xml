@@ -53,4 +53,9 @@
         <item name="android:backgroundTint">@drawable/edit_tint</item>
     </style>
 
+    <style name="AppTheme.NumberPicker">
+        <item name="colorControlNormal">@color/colorClear</item>
+        <item name="android:textColorPrimary">@color/colorClear</item>
+    </style>
+
 </resources>

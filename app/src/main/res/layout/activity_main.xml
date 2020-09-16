@@ -33,7 +33,7 @@
             app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_new_password" />
 
-        <com.infinity.passwordgenerator.views.PasswordTextView
+        <com.dwilliam.passwordgenerator.views.PasswordTextView
             android:id="@+id/password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="20sp"
-            app:minLines="3"/>
+            app:minLines="6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -118,46 +118,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tools_container">
 
-            <ImageView
-                android:id="@+id/decrease"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@drawable/clear_tint"
-                android:clickable="true"
-                android:contentDescription="@string/_1"
-                android:focusable="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/length"
-                app:srcCompat="@drawable/ic_less" />
+        <ImageView
+            android:id="@+id/decrease"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@drawable/clear_tint"
+            android:clickable="true"
+            android:contentDescription="@string/_1"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/length"
+            app:srcCompat="@drawable/ic_less" />
 
-            <ImageView
-                android:id="@+id/increase"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:tint="@drawable/clear_tint"
-                android:clickable="true"
-                android:contentDescription="@string/__1"
-                android:focusable="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/length"
-                app:srcCompat="@drawable/ic_plus" />
+        <ImageView
+            android:id="@+id/increase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@drawable/clear_tint"
+            android:clickable="true"
+            android:contentDescription="@string/__1"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/length"
+            app:srcCompat="@drawable/ic_plus" />
 
-            <SeekBar
-                android:id="@+id/lengthBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:max="56"
-                android:progress="0"
-                android:thumbTint="@color/colorAccent"
-                app:layout_constraintBottom_toBottomOf="@+id/decrease"
-                app:layout_constraintEnd_toStartOf="@+id/increase"
-                app:layout_constraintStart_toEndOf="@+id/decrease"
-                app:layout_constraintTop_toTopOf="@+id/decrease" />
+        <SeekBar
+            android:id="@+id/lengthBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:max="56"
+            android:progress="0"
+            android:thumbTint="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/decrease"
+            app:layout_constraintEnd_toStartOf="@+id/increase"
+            app:layout_constraintStart_toEndOf="@+id/decrease"
+            app:layout_constraintTop_toTopOf="@+id/decrease" />
 
         <RadioButton
             android:id="@+id/regular"
@@ -169,62 +169,62 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lengthBar" />
 
-        <Switch
-                android:id="@+id/lower"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin"
-                android:checked="true"
-                app:layout_constraintBottom_toBottomOf="@+id/text_lower"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_lower" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/lower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin"
+            android:checked="true"
+            app:layout_constraintBottom_toBottomOf="@+id/text_lower"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_lower" />
 
-            <Switch
-                android:id="@+id/upper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin"
-                android:checked="true"
-                app:layout_constraintBottom_toBottomOf="@+id/text_upper"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_upper" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/upper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin"
+            android:checked="true"
+            app:layout_constraintBottom_toBottomOf="@+id/text_upper"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_upper" />
 
-            <Switch
-                android:id="@+id/digit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin"
-                android:checked="true"
-                app:layout_constraintBottom_toBottomOf="@+id/text_digit"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_digit" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/digit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin"
+            android:checked="true"
+            app:layout_constraintBottom_toBottomOf="@+id/text_digit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_digit" />
 
-            <Switch
-                android:id="@+id/special"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin"
-                app:layout_constraintBottom_toBottomOf="@+id/text_special"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_special" />
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/special"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin"
+            app:layout_constraintBottom_toBottomOf="@+id/text_special"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_special" />
 
-            <TextView
-                android:id="@+id/length"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:minWidth="24dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:text="@string/default_length"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:minWidth="24dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="@string/default_length"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_lower"
@@ -237,35 +237,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/regular" />
 
-            <TextView
-                android:id="@+id/text_upper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/big_margin"
-                android:text="@string/upper_case_letters"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_lower" />
+        <TextView
+            android:id="@+id/text_upper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/big_margin"
+            android:text="@string/upper_case_letters"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_lower" />
 
-            <TextView
-                android:id="@+id/text_digit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/big_margin"
-                android:text="@string/digits"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_upper" />
+        <TextView
+            android:id="@+id/text_digit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/big_margin"
+            android:text="@string/digits"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_upper" />
 
-            <TextView
-                android:id="@+id/text_special"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/big_margin"
-                android:text="@string/special_chars"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_digit" />
+        <TextView
+            android:id="@+id/text_special"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/big_margin"
+            android:text="@string/special_chars"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_digit" />
 
         <RadioButton
             android:id="@+id/custom"
@@ -276,7 +276,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_special" />
 
-        <com.infinity.passwordgenerator.views.CustomChooserView
+        <com.dwilliam.passwordgenerator.views.CustomChooserView
             android:id="@+id/chooser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

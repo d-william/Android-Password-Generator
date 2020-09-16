@@ -4,17 +4,16 @@
     <string name="copy">copy</string>
     <string name="share">share</string>
     <string name="qrcode">QR Code</string>
-    <string name="pdf">pdf</string>
     <string name="_1">-1</string>
     <string name="__1">+1</string>
     <string name="lower_case_letters">Lower case letters</string>
     <string name="upper_case_letters">Upper case letters</string>
     <string name="digits">Digits</string>
     <string name="special_chars">Special characters</string>
-    <string name="hystory">Hystory</string>
+    <string name="history">History</string>
     <string name="bulk">Bulk generation</string>
     <string name="choose_length">Length</string>
-    <string name="cleay_history">Cleay history</string>
+    <string name="clear_history">Clear history</string>
     <string name="delete">delete</string>
     <string name="select_all">select all</string>
     <string name="choose_bulk">Choose number</string>
@@ -25,4 +24,7 @@
     <string name="add">Add</string>
     <string name="parameters">Parameters</string>
     <string name="custom_parameters">Custom parameters</string>
+    <string name="name">Name</string>
+    <string name="symbols">Symbols</string>
+    <string name="default_size">100</string>
 </resources>

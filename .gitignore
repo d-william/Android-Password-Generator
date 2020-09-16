@@ -2,12 +2,10 @@
 .gradle
 /local.properties
 /.idea
-.DS_Store
 /build
-/captures
-.externalNativeBuild
-.cxx
 .config/
 gradle/
 gradlew
 gradlew.bat
+/gradle.properties
+/settings.gradle
