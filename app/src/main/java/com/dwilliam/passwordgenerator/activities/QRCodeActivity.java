@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -51,6 +53,7 @@ public class QRCodeActivity extends AppCompatActivity {
         if (currentPassword == null) finish();
 
         clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
         PasswordTextView passwordTextView = findViewById(R.id.password);
         passwordTextView.setText(currentPassword);
         qrcode = findViewById(R.id.qrcode);
@@ -62,8 +65,11 @@ public class QRCodeActivity extends AppCompatActivity {
         float density = getApplicationContext().getResources().getDisplayMetrics().density;
         int width = point.x - (144 * (int) density);
 
-        try { qrcode.setImageBitmap(qrcode(width)); }
-        catch (WriterException e) { e.printStackTrace(); }
+        try {
+            qrcode.setImageBitmap(qrcode(width));
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
 
     }
 

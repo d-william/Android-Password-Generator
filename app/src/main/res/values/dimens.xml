@@ -2,4 +2,5 @@
 <resources>
     <dimen name="margin">8dp</dimen>
     <dimen name="big_margin">16dp</dimen>
+    <dimen name="tool_size">32dp</dimen>
 </resources>

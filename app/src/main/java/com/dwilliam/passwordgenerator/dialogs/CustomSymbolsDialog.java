@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -86,11 +87,13 @@ public class CustomSymbolsDialog extends DialogFragment implements DialogInterfa
         if (dialog != null && getRetainInstance()) {
             dialog.setDismissMessage(null);
         }
+        isCanceled = true;
         super.onDestroyView();
     }
 
     public interface Listener {
         void onDismiss(int which, boolean canceled);
     }
+
 }
 

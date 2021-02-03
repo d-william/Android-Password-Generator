@@ -20,13 +20,15 @@ import java.util.Objects;
 
 public class BulkDialog extends DialogFragment implements TextWatcher {
 
-    private final Listener listener;
+    private Listener listener;
     private EditText size;
     private AlertDialog dialog;
 
     public static BulkDialog newInstance(Listener listener) {
         return new BulkDialog(listener);
     }
+
+    public BulkDialog() {}
 
     public BulkDialog(Listener listener) {
         this.listener = listener;
@@ -35,6 +37,9 @@ public class BulkDialog extends DialogFragment implements TextWatcher {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        if (context instanceof Listener) {
+            this.listener = (Listener) context;
+        }
     }
 
     @NonNull

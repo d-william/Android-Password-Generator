@@ -29,6 +29,12 @@ public class LengthDialog extends DialogFragment {
     private final int max;
     private NumberPicker numberPicker;
 
+    public LengthDialog() {
+        this.min = ParametersMediator.MIN;
+        this.max = ParametersMediator.MAX;
+        this.length = -1;
+    }
+
     public LengthDialog(int length) {
         this.min = ParametersMediator.MIN;
         this.max = ParametersMediator.MAX;
@@ -38,14 +44,19 @@ public class LengthDialog extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof MainActivity) {
-            this.listener = (MainActivity) context;
+        if (context instanceof Listener) {
+            this.listener = (Listener) context;
         }
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        if (savedInstanceState != null) this.length = savedInstanceState.getInt("length", -1);
+
+        if (this.length == -1) throw new IllegalStateException();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
         builder.setView(R.layout.length_dialog_layout);
         builder.setMessage(R.string.choose_length)
@@ -58,11 +69,17 @@ public class LengthDialog extends DialogFragment {
         numberPicker = Objects.requireNonNull(dialog.findViewById(R.id.length));
         numberPicker.setMinValue(min);
         numberPicker.setMaxValue(max);
-        numberPicker.setValue(length);
+        numberPicker.setValue(this.length);
         numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> this.length = newVal);
         //fixColor();
 
         return dialog;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("length", this.length);
     }
 
     public interface Listener {

@@ -134,8 +134,7 @@ public class MainActivity extends AppCompatActivity implements BulkDialog.Listen
     }
 
     private void share() {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, currentPassword);
         sendIntent.setType("text/plain");
         startActivity(sendIntent);

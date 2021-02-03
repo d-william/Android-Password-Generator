@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:longClickable="true"
-    android:background="@drawable/background_container"
+    android:background="@drawable/background_item"
     android:descendantFocusability="blocksDescendants">
 
         <TextView
